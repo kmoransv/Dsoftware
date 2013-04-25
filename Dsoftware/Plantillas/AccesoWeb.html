@@ -1,0 +1,23 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		<div class="container">
+			<p> Accesa para poder Ver tus Tratamientos, Imprimirlos y poder Gestionar tus Citas </p>
+		</div>
+	</section>
+	<aside>
+		<!--<div class="container">-->
+			<form method="post"> {% csrf_token %}
+				<fieldset>
+					<legend> Inicio de Seci&oacute;n </legend>
+					{{ iFrmAcceso }}<br>
+					<button type="submit" class="btn"> Acceso </button>
+					<a href="{% url Clinica.views.AgregarPaciente %}" class="btn btn-link"> Registrarse </a>
+				</fielset>
+			</form>
+		<!--</div>-->
+	</aside>
+
+{% endblock contenido %}
