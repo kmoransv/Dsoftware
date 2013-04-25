@@ -1,0 +1,31 @@
+body{
+	width: 1300px;
+	margin: 10px auto;
+}
+
+header{
+	margin: 0 auto;
+	text-align: center;
+}
+
+nav{
+	margin: 0 auto; /* Centro el menu*/
+	overflow: hidden; /* si el contenido se excede se oculta*/
+}
+
+section{
+	float: left;
+	width: 910px;
+	padding: 10px;
+}
+
+aside{
+	padding: 10px;
+	float: right;
+	width: 338px;
+}
+
+footer{
+	border-top-style: groove;
+	clear: both;
+}

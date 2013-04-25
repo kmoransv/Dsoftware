@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Clinica la Esperanza </title>
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/maqueta.css">
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap-responsive.min.css">
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap-datetimepicker.min.css">
+	</head>
+	<body>
+		{% if user.is_authenticated %}
+			{% if user.is_superuser %}
+				<!-- Administrador del Sistema -->
+				<div class="navbar">
+					<div class="navbar-inner">
+						<a href="{% url Clinica.views.indexP %}" class="brand"> Clinica la Esperanza</a>
+						<ul class="nav">
+							<!-- Menu -->
+							<li class="dropdown">
+						   		<a class="dropdown-toggle" data-toggle="dropdown"href="#">
+							   		Administracion de Usuarios <b class="caret"></b>
+							 	</a>
+								<ul class="dropdown-menu">
+							   		<li> <a href="{% url Clinica.views.ConsultarEmpleado %}"> Gestionar Empleados </a> </li>
+
+							   		<!-- SubMenu -->
+							   		<li class="dropdown-submenu">
+							   			<a tabindex="-1" href="#">
+							   				Gestionar Medicos
+							   			</a>
+						   				<ul class="dropdown-menu">
+						   					<li> <a href="{% url Clinica.views.ConsultarMedico %}"> Medicos </a> </li>
+						   					<li> <a href="{% url Clinica.views.MedicoEspecialidad %}"> Especialidades por Medico </a> </li>
+						   				</ul>
+							   		</li>
+							   		<li> <a href="{% url Clinica.views.ConsultarPaciente %}"> Gestionar Pacientes </a> </li>
+								</ul>
+							</li>
+
+							<!-- Menu -->
+							<li class="dropdown">
+						   		<a class="dropdown-toggle" data-toggle="dropdown"href="#">
+							   		Administracion de Catalogos <b class="caret"></b>
+							 	</a>
+								<ul class="dropdown-menu">
+							   		<li> <a href="{% url Clinica.views.ConsultarClinica %}"> Clinicas </a> </li>
+									<li> <a href="{% url Clinica.views.ConsultarEspecialidad %}"> Especialides de Medicos </a> </li>
+									<li> <a href="{% url Clinica.views.ConsultarEstado %}"> Estados de Citas </a> </li>
+							   	</ul>
+							</li>
+
+							<!-- Menu -->
+							<li class="dropdown">
+						   		<a class="dropdown-toggle" data-toggle="dropdown"href="#">
+							   		Reportes <b class="caret"></b>
+							 	</a>
+								<ul class="dropdown-menu">
+							   		<li> <a href="#"> Tratamiento </a> </li>
+							   		<li> <a href="#"> Expediente </a> </li>
+							   	</ul>
+							</li>
+
+							<!-- Menu -->
+							<li class="dropdown">
+						   		<a class="dropdown-toggle" data-toggle="dropdown"href="#">
+							   		Cuenta <b class="caret"></b>
+							 	</a>
+								<ul class="dropdown-menu">
+							   		<li> <a href="#"> Cambiar Contrasena </a> </li>
+							   		<li> <a href="{% url Clinica.views.Cerrar %}"> Cerrar Sesion </a> </li>
+							   	</ul>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			{% else %}
+				{% if user.is_staff %}
+					<!-- Medico y Secre -->
+					<div class="navbar">
+						<div class="navbar-inner">
+							<a href="{% url Clinica.views.indexP %}" class="brand"> Clinica la Esperanza</a>
+							<ul class="nav">
+								<!-- Menu -->
+								<li> <a href="#"> Administracion de Pacientes </a> </li>
+								
+								<!-- Menu -->
+								<li class="dropdown">
+							   		<a class="dropdown-toggle" data-toggle="dropdown"href="#">
+								   		Administracion de Citas <b class="caret"></b>
+								 	</a>
+									<ul class="dropdown-menu">
+								   		<li> <a href="{% url Clinica.views.CitaPaciente2 %}"> Gestionar Citas </a> </li>
+								   		<li> <a href="#"> Orden de Citas </a> </li>
+								   	</ul>
+								</li>
+
+								<!-- Menu -->
+								<li class="dropdown">
+							   		<a class="dropdown-toggle" data-toggle="dropdown"href="#">
+								   		Reportes <b class="caret"></b>
+								 	</a>
+									<ul class="dropdown-menu">
+								   		<li> <a href="#"> Tratamiento </a> </li>
+								   		<li> <a href="#"> Expediente </a> </li>
+								   	</ul>
+								</li>
+
+								<!-- Menu -->
+								<!--<li class="dropdown">
+							   		<a class="dropdown-toggle" data-toggle="dropdown"href="{% url Clinica.views.ExpedientePaciente %}">
+								   		Administracion de Expedientes <b class="caret"></b>
+								 	</a>
+									<ul class="dropdown-menu">
+								   		<li> <a href="#"> Crear </a> </li>
+								   		<li> <a href="#"> Editar </a> </li>
+								   	</ul>
+								</li>-->
+								
+								<li> <a href="{% url Clinica.views.ExpedientePaciente %}"> Administracion de Expedientes </a> </li>
+
+								<!-- Menu -->
+								<li> <a href="{% url Clinica.views.ConsultarHorario %}"> Horarios de Atencion </a> </li>
+
+								<!-- Menu -->
+								<li class="dropdown">
+							   		<a class="dropdown-toggle" data-toggle="dropdown"href="#">
+								   		Cuenta <b class="caret"></b>
+								 	</a>
+									<ul class="dropdown-menu">
+								   		<li> <a href="#"> Cambiar Contraseña </a> </li>
+								   		<li> <a href="{% url Clinica.views.Cerrar %}"> Cerrar Sesion </a> </li>
+								   	</ul>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+				{% else %}
+					<div class="navbar">
+						<div class="navbar-inner">
+							<a href="{% url Clinica.views.index %}" class="brand"> Clinica la Esperanza</a>
+							<ul class="nav">
+								<li class="active"> <a href="{% url Clinica.views.index %}"> Inicio </a> </li>
+								<li> <a href="#"> Instalaciones </a></li>
+								<li> <a href="#"> Especialidades </a></li>
+								<li> <a href="#"> Médicos </a></li>
+								<li> <a href="{% url Clinica.views.ConsultarCita %}"> Administracion de Citas </a></li>
+								<!-- Menu -->
+								<li class="dropdown">
+							   		<a class="dropdown-toggle" data-toggle="dropdown"href="#">
+								   		Cuenta <b class="caret"></b>
+								 	</a>
+									<ul class="dropdown-menu">
+								   		<li> <a href="#"> Cambiar Contraseña </a> </li>
+								   		<li> <a href="{% url Clinica.views.Cerrar %}"> Cerrar Sesion </a> </li>
+								   	</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				{% endif %}
+			{% endif %}
+		{% else %}
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a href="{% url Clinica.views.index %}" class="brand"> Clinica la Esperanza</a>
+					<ul class="nav">
+						<li class="active"> <a href="{% url Clinica.views.index %}"> Inicio </a> </li>
+						<li> <a href="#"> Instalaciones </a></li>
+						<li> <a href="#"> Especialidades </a></li>
+						<li> <a href="#"> Médicos </a></li>
+						<li> <a href="{% url Clinica.views.Acceso %}"> Acceso </a></li>
+					</ul>
+				</div>
+			</div>
+		{% endif %}
+
+		{% block contenido %}
+		{% endblock contenido %}
+		<footer>
+			    <address>
+				    <strong>Clinica la Esperanza</strong><br>
+				    Ahuachapan<br>
+				    El Salvador<br>
+				    <abbr title="Phone">T:</abbr> 2380-7765
+				</address>
+				<address>
+					<strong>Medico de la Clinica</strong><br>
+					<a href="mailto:#">first.last@example.com</a>
+				</address>
+		</footer>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript">
+			$('#datetimepicker').datetimepicker({
+				format: 'dd/MM/yyyy',
+				language: 'es-SV',
+				pickTime: false
+			});
+			
+			$('#datetimepicker3').datetimepicker({
+				pickDate: false,
+				pickSeconds: false,
+				pick12HourFormat: true
+			});
+			
+			$('#datetimepicker4').datetimepicker({
+				pickDate: false,
+				pickSeconds: false,
+				pick12HourFormat: true
+			});
+
+		</script>
+
+		<!--
+		<script type="text/javascript" src="{{ADMIN_MEDIA_PREFIX}}js/core.js"></script>
+		<script type="text/javascript" src="{{ADMIN_MEDIA_PREFIX}}js/getElementsBySelector.js"></script>
+		<script type="text/javascript" src="{{ADMIN_MEDIA_PREFIX}}js/actions.js"></script>
+		<script type="text/javascript" src="{{ADMIN_MEDIA_PREFIX}}js/SelectBox.js"></script>
+		<script type="text/javascript" src="{{ADMIN_MEDIA_PREFIX}}js/SelectFilter2.js"></script>
+		<script type="text/javascript" src="/{{MEDIA_URL}}/js/jsi18n.js"></script>
+		-->
+		
+	</body>
+</html>
