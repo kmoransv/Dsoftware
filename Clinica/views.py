@@ -40,3 +40,7 @@ def Acceso(request):
 def Cerrar(request):
     logout(request)
     return HttpResponseRedirect("/")
+
+@login_required(login_url='/Acceso/')
+def indexP(request):
+    return render_to_response("ClinicaP.html", context_instance=RequestContext(request))
