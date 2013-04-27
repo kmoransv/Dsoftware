@@ -1,0 +1,46 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		Aun nada
+	</section>
+	<aside>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<form method="post"> {% csrf_token %}
+				<fieldset>
+					<legend> Agregar Cita </legend>
+					<label> Seleccione el Medico </label>
+					<select name="medico">
+						{% for i in iTblMedico %}
+							<option value="{{ i.id_medico }}"> {{i.nombre_medico}} {{i.apellido_medico}} </option>
+						{% endfor %}
+					</select>
+					<label> Elija la Fecha de la Cita </label>
+					<div id="datetimepicker" class="input-append date">
+						<span class="add-on">
+							<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+						</span>
+						<input type="text" name="fecha_cita"></input>
+					</div>
+
+					<label> Elija la Hora de la Cita </label>
+					<div id="datetimepicker3" class="input-append">
+						<span class="add-on">
+							<i data-time-icon="icon-time" data-date-icon="icon-calendar">
+							</i>
+						</span>
+						<input data-format="HH:mm PP" type="text" name="hora_cita"></input>
+					</div>
+					<br>
+					
+					<button type="submit" class="btn btn-primary"> Siguiente </button>
+					<a href="#" class="btn btn-danger"> Cancelar </a>
+				</fielset>
+			</form>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</aside>
+
+{% endblock contenido %}

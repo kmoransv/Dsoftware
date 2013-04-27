@@ -414,4 +414,25 @@ def CitaPaciente2(request):
                               {"iFrmCitaPaciente2":iFrmCitaPaciente2},
                               context_instance=RequestContext(request))
     
+    @login_required(login_url='/Acceso/')
+def AgregarCita(request, id_paciente, id_especialidad):
+    iTblMedico = TblMedico.objects.raw("SELECT t1.id_medico, t1.nombre_medico, t1.apellido_medico FROM tbl_medico AS t1 INNER JOIN tbl_especialidad_x_medico AS t2 ON t1.id_medico = t2.id_medico WHERE id_especialidad = %d;" %int(id_especialidad))
+    if request.method == "POST":
+        fecha = datetime.datetime.strptime(request.POST['fecha_cita'], '%d/%m/%Y').strftime('%Y-%m-%d')
+        hora = datetime.datetime.strptime(request.POST['hora_cita'], '%I:%M %p').strftime('%H:%M')
+        iTblEstado = TblEstado.objects.get(id_estado=1)
+        medico = TblMedico.objects.get(id_medico=request.POST['medico'])
+        paciente = TblPaciente.objects.get(id_paciente=id_paciente)
+        iTblCita = TblCita(id_paciente=paciente,
+                           id_medico=medico,
+                           id_estado=iTblEstado,
+                           fecha_solicitada=fecha,
+                           hora_solicitada=hora)
+        iTblCita.save()
+        return HttpResponseRedirect("/index/Administracion/")
+        #return HttpResponseRedirect("/index/")
+    return render_to_response("AgregarCita.html",
+                              {"iTblMedico":iTblMedico},
+                              context_instance=RequestContext(request))
+    
     
