@@ -1,0 +1,66 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+<section>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<p> Accesa para poder Ver tus Tratamientos, Imprimirlos y poder Gestionar tus Citas </p>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</section>
+	<aside>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<form method="post"> {% csrf_token %}
+				<fieldset>
+					<legend> Registro de Empleados </legend>
+
+					<label> Nombres </label>
+					{{ iFrmEmpleado.nombre_empleado }}
+					<span class="help-block"> Ejemplo: Francisco Josue </span>
+
+					<label> Apellidos </label>
+					{{ iFrmEmpleado.apellido_empleado }}
+					<span class="help-block"> Ejemplo: Padilla Rodriguez </span>
+
+					<label> Contrase&ntilde;a </label>
+					{{ iFrmEmpleado.Contrasena }}
+					<span class="help-block"> Ejemplo: Padilla Rodriguez </span>
+
+					<label> Genero </label>
+					
+					{{ iFrmEmpleado.genero_empleado }}
+
+					<label> Fecha de Nacimiento </label>
+
+					<div id="datetimepicker" class="input-append date">
+						<span class="add-on">
+							<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+						</span>
+						{{ iFrmEmpleado.fecha_nacimiento_empleado }}
+					</div>
+					
+					<label> Documento Unico de Identidad </label>
+					{{ iFrmEmpleado.dui_empleado }}
+					<span class="help-block"> Ejemplo: 89987659-0 </span>
+
+					<label> Telefono </label>
+					{{ iFrmEmpleado.telefono_empleado }}
+					<span class="help-block"> Ejemplo: 77876654 </span>
+
+					<label> Recidencia </label>
+					{{ iFrmEmpleado.direccion_empleado }}
+					<span class="help-block"> Ejemplo: Calle 17 de Noviembre #24 Santa Ana </span>
+
+					<!--{{ iFrmMedico }}-->
+					
+					<button type="submit" class="btn btn-primary"> Registrar </button>
+					<a href="{% url Clinica.views.AgregarPaciente %}" class="btn btn-danger"> Cancelar </a>
+				</fielset>
+			</form>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</aside>
+
+{% endblock contenido %}

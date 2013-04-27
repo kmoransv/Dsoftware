@@ -1,0 +1,43 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<table class="table">
+				<thead>
+					<tr>
+						<th> Medico </th>
+						<th> Fecha </th>
+						<th> Hora </th>
+						<th> Mantenimiento </th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for i in iTblCita%}
+						<tr>
+							<th>{{i.nombre_medico}} {{i.apellido_medico}}</th>
+							<th>{{i.fecha_solicitada}}</th>
+							<th>{{i.hora_solicitada|date:"g:i a"}}</th>
+							<th>
+								<a href="#" class="btn">
+									Editar
+								</a>
+							</th>
+						</tr>
+					{%empty%}
+						<tr>
+							<th colspan="8"> No hay Citas Agregada </th>
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+			<a href="{% url Clinica.views.CitaPaciente %}" class="btn btn-primary"> Agregar Cita </a>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</section>
+	<aside>
+	</aside>
+
+{% endblock contenido %}

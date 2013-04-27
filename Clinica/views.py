@@ -333,3 +333,85 @@ def EspecialidadxMedicoEliminar(requese, id_especialidad, id_medico):
     especialidadxmedico = TblEspecialidadXMedico.objects.get(id_especialidad=int(id_especialidad), id_medico=int(id_medico))
     especialidadxmedico.delete()
     return HttpResponseRedirect("/Usuarios/Medico/Especialidad/Especialidades/%d" %int(id_medico))
+
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def ConsultarEmpleado(request):
+    iTblEmpleado = TblEmpleado.objects.all()
+    return render_to_response("ConsultarEmpleado.html",
+                              {"iTblEmpleado":iTblEmpleado},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EliminarEmpleado(request, id_empleado):
+    empleado = TblEmpleado.objects.get(pk=id_empleado)
+    usuario = User.objects.get(username = empleado.dui_empleado)
+    empleado.delete()
+    usuario.delete()
+    return HttpResponseRedirect("/Usuarios/Consultar/Empleados/")
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def AgregarEmpleado(request):
+    if request.method == "POST":
+        iFrmEmpleado = FrmEmpleado(request.POST)
+        if iFrmEmpleado.is_valid():
+            U = User.objects.create_user(request.POST['dui_empleado'],
+                                         'notiene@notiene.com',
+                                         request.POST['Contrasena'])
+            U.save()
+            idU = User.objects.latest('id')
+            '''idG = Group.objects.get(pk=2)
+            idG.user_set.add(idU)'''
+
+            uEmpleado = User.objects.latest('id')
+            permiso = Permission.objects.get(name='Can add tbl cita')
+            uEmpleado.user_permissions.add(permiso)
+
+            UStaff = User.objects.latest('id')
+            UStaff.is_staff = 1
+            UStaff.save()
+            idC = TblClinica.objects.get(pk=1)
+            NiFrmEmpleado = iFrmEmpleado.save(commit=False)
+            NiFrmEmpleado.user = idU
+            NiFrmEmpleado.id_clinica = idC
+            NiFrmEmpleado.save()
+            return HttpResponseRedirect("/index/Administracion")
+
+    else:
+        iFrmEmpleado = FrmEmpleado()
+    return render_to_response("AgregarEmpleado.html",
+                              {"iFrmEmpleado":iFrmEmpleado},
+                              context_instance=RequestContext(request))
+    
+    @login_required(login_url='/Acceso/')
+def ConsultarCita(request):
+    consulta = "SELECT t1.id_cita, t3.nombre_medico, t3.apellido_medico, t1.fecha_solicitada, t1.hora_solicitada FROM tbl_cita AS t1 INNER JOIN tbl_paciente AS t2 ON t1.id_paciente = t2.id_paciente INNER JOIN tbl_medico AS t3 ON t1.id_medico = t3.id_medico WHERE t2.dui_paciente = '%s' ORDER BY t1.fecha_solicitada;" %request.user.username
+    iTblCita = TblCita.objects.raw(consulta)
+    return render_to_response("ConsultarCita.html",
+                              {"iTblCita":iTblCita},
+                              context_instance=RequestContext(request))
+
+@login_required(login_url='/Acceso/')
+def CitaPaciente(request):
+    paciente = TblPaciente.objects.get(dui_paciente=request.user.username)
+    if request.method == "POST":
+        iFrmCitaPaciente = FrmCitaPaciente(request.POST)
+        return HttpResponseRedirect("/Usuario/Paciente/Cita/Agregar/%d/%d/" %(int(paciente.id_paciente),
+                                                                              int(request.POST['Especialidad'])))
+    else:
+        iFrmCitaPaciente = FrmCitaPaciente()
+    return render_to_response("CitaPaciente.html",
+                              {"iFrmCitaPaciente":iFrmCitaPaciente},
+                              context_instance=RequestContext(request))
+
+@permission_required('Clinica.add_tblcatalogoexpediente', login_url='/Acceso/')
+def CitaPaciente2(request):
+    if request.method == "POST":
+        iFrmCitaPaciente2 = FrmCitaPaciente2(request.POST)
+        paciente = TblPaciente.objects.get(dui_paciente=request.POST['Documento_Paciente'])
+        return HttpResponseRedirect("/Usuario/Paciente/Cita/Agregar/%d/%d/" %(int(paciente.id_paciente),
+                                                                              int(request.POST['Especialidad'])))
+    else:
+        iFrmCitaPaciente2 = FrmCitaPaciente2()
+    return render_to_response("CitaPaciente2.html",
+                              {"iFrmCitaPaciente2":iFrmCitaPaciente2},
+                              context_instance=RequestContext(request))
+    
+    
