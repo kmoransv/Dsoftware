@@ -1,0 +1,67 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+<section>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<p> Accesa para poder Ver tus Tratamientos, Imprimirlos y poder Gestionar tus Citas </p>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</section>
+	<aside>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<form method="post"> {% csrf_token %}
+				<fieldset>
+					<legend> Registro de Medico </legend>
+
+					<label> Nombres </label>
+					{{ iFrmMedico.nombre_medico }}
+					<span class="help-block"> Ejemplo: Francisco Josue </span>
+
+					<label> Apellidos </label>
+					{{ iFrmMedico.apellido_medico }}
+					<span class="help-block"> Ejemplo: Padilla Rodriguez </span>
+
+					<label> Contrase&ntilde;a </label>
+					{{ iFrmMedico.Contrasena }}
+					<span class="help-block"> Ejemplo: Padilla Rodriguez </span>
+
+					<label> Genero </label>
+					
+					{{ iFrmMedico.genero_medico }}
+
+					<label> Fecha de Nacimiento </label>
+
+					<div id="datetimepicker" class="input-append date">
+						<span class="add-on">
+							<i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+						</span>
+						{{ iFrmMedico.fecha_nacimiento_medico }}
+					</div>
+					
+					<label> Documento Unico de Identidad </label>
+					{{ iFrmMedico.dui_medico }}
+					<span class="help-block"> Ejemplo: 89987659-0 </span>
+
+					<label> Telefono </label>
+					{{ iFrmMedico.telefono_medico }}
+					<span class="help-block"> Ejemplo: 77876654 </span>
+
+					<label> Recidencia </label>
+					{{ iFrmMedico.direccion_medico }}
+					<span class="help-block"> Ejemplo: Calle 17 de Noviembre #24 Santa Ana </span>
+
+					<!--{{ iFrmMedico }}-->
+
+					
+					<button type="submit" class="btn btn-primary"> Registrar </button>
+					<a href="{% url Clinica.views.AgregarPaciente %}" class="btn btn-danger"> Cancelar </a>
+				</fielset>
+			</form>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</aside>
+
+{% endblock contenido %}

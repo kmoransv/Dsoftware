@@ -1,0 +1,65 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<h1>Especialidades del Medico {{iTblMedico.nombre_medico}} {{iTblMedico.apellido_medico}} </h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th> Descripcion </th>
+						<th> Mantenimiento </th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for i in iTblEspecialidadxMedico %}
+						<tr>
+							<th>{{ i.descripcion_especialidad }}</th>
+							<th>
+								<a href="{% url Clinica.views.EspecialidadxMedicoEliminar i.id_especialidad iTblMedico.id_medico %}" class="btn btn-danger">
+									Eliminar
+								</a>
+							</th>
+						</tr>
+					{%empty%}
+						<tr>
+							<th colspan="2"> No hay Especialidad Agregada </th>
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+
+			<h1>Especialidades Disponibles Para Agregar </h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th> Descripcion </th>
+						<th> Mantenimiento </th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for i in iTblEspecialidad%}
+						<tr>
+							<th>{{i.descripcion_especialidad}}</th>
+							<th>
+								<a href="{% url Clinica.views.EspecialidadxMedicoAgregar i.id_especialidad iTblMedico.id_medico %}" class="btn btn-primary">
+									Agregar
+								</a>
+							</th>
+						</tr>
+					{%empty%}
+						<tr>
+							<th colspan="2"> No hay Especialidad Agregada </th>
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</section>
+	<aside>
+	</aside>
+
+{% endblock contenido %}

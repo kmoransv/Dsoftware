@@ -205,3 +205,131 @@ def EliminarEstado(request, id_estado):
     estado = TblEstado.objects.get(pk=id_estado)
     estado.delete()
     return HttpResponseRedirect("/Administracion/Consultar/Estado/")
+
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def ConsultarMedico(request):
+    iTblMedico = TblMedico.objects.all()
+    return render_to_response("ConsultarMedico.html",
+                              {"iTblMedico":iTblMedico},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EliminarMedico(request, id_medico):
+    medico = TblMedico.objects.get(pk=id_medico)
+    usuario = User.objects.get(username = medico.dui_medico)
+    medico.delete()
+    usuario.delete()
+    return HttpResponseRedirect("/Usuarios/Consultar/Medicos/")
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def AgregarMedico(request):
+    if request.method == "POST":
+        iFrmMedico = FrmMedico(request.POST)
+        if iFrmMedico.is_valid():
+            U = User.objects.create_user(request.POST['dui_medico'],
+                                         'notiene@notiene.com',
+                                         request.POST['Contrasena'])
+            U.save()
+            idU = User.objects.latest('id')
+            '''idG = Group.objects.get(pk=2)
+            idG.user_set.add(idU)'''
+
+            UStaff = User.objects.latest('id')
+            UStaff.is_staff = 1
+            UStaff.save()
+
+            uMedico = User.objects.latest('id')
+            permiso = Permission.objects.get(name='Can add tbl catalogo expediente')
+            uMedico.user_permissions.add(permiso)
+
+            idC = TblClinica.objects.get(pk=1)
+            NiFrmMedico = iFrmMedico.save(commit=False)
+            NiFrmMedico.user = idU
+            NiFrmMedico.id_clinica = idC
+            NiFrmMedico.save()
+
+            iTblMedico = TblMedico.objects.latest('id_medico')
+            iTblHorario = TblHorario(id_medico=iTblMedico,
+                                     hora_entrada='07:00',
+                                     hora_salida='18:00')
+            iTblHorario.save()
+
+            return HttpResponseRedirect("/index/Administracion")
+
+    else:
+        iFrmMedico = FrmMedico()
+    return render_to_response("AgregarMedico.html",
+                              {"iFrmMedico":iFrmMedico},
+                              context_instance=RequestContext(request))
+
+@permission_required('Clinica.add_tblcatalogoexpediente', login_url='/Acceso/')
+def ConsultarHorario(request):
+    iTblMedico = TblMedico.objects.get(dui_medico=request.user.username)
+    #iTblHorario = TblHorario.objects.get(id_medico=int(iTblMedico.id_medico))
+    consulta = "SELECT t1.id_horario, t2.nombre_medico, t2.apellido_medico, t1.hora_entrada, t1.hora_salida FROM tbl_horario AS t1 INNER JOIN tbl_medico AS t2 ON t1.id_medico = t2.id_medico WHERE t1.id_medico = %d;" %int(iTblMedico.id_medico)
+    iTblHorario = TblHorario.objects.raw(consulta)
+    return render_to_response("ConsultarHorario.html",
+                              {"iTblHorario":iTblHorario},
+                              context_instance=RequestContext(request))
+
+@permission_required('Clinica.add_tblcatalogoexpediente', login_url='/Acceso/')
+def EditarHorario(request, id_horario):
+    horario = TblHorario.objects.get(pk=id_horario)
+    if request.method == "POST":
+        iFrmHorario = FrmHorario(request.POST, instance=horario)
+        if iFrmHorario.is_valid():
+            #iFrmHorario.save()
+            hora_entrada = datetime.datetime.strptime(request.POST['hora_entrada'], '%I:%M %p').strftime('%H:%M')
+            hora_salida = datetime.datetime.strptime(request.POST['hora_salida'], '%I:%M %p').strftime('%H:%M')
+            medico = TblMedico.objects.get(dui_medico=request.user.username)
+            iTblHorario = TblHorario.objects.get(id_medico=medico.id_medico)
+            iTblHorario.hora_entrada = hora_entrada
+            iTblHorario.hora_salida = hora_salida
+            iTblHorario.save()
+            return HttpResponseRedirect("/Usuarios/Medico/Horario/Consultar/")
+    else:
+        iFrmHorario = FrmHorario()
+    return render_to_response("EditarHorario.html",
+                              {"iFrmHorario":iFrmHorario},
+                              context_instance=RequestContext(request))
+
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def MedicoEspecialidad(request):
+    if request.method == "POST":
+        iFrmMedicoE = FrmMedicoE(request.POST)
+        if iFrmMedicoE.is_valid():
+            try:
+                medico = TblMedico.objects.get(dui_medico=request.POST['Documento'])
+                return HttpResponseRedirect("/Usuarios/Medico/Especialidad/Especialidades/%d" %medico.id_medico)
+            except ObjectDoesNotExist, e:
+                return HttpResponse("El Medico no Existe")
+    else:
+        iFrmMedicoE = FrmMedicoE()
+    return render_to_response("MedicoE.html",
+                              {"iFrmMedicoE":iFrmMedicoE},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EspecialidadxMedico(request, id_medico):
+    iTblEspecialidad = TblEspecialidad.objects.all()
+    iTblMedico = TblMedico.objects.get(id_medico=id_medico)
+    consulta = "SELECT t1.id_especialidad, t1.descripcion_especialidad FROM tbl_especialidad AS t1 INNER JOIN tbl_especialidad_x_medico AS t2 ON t1.id_especialidad = t2.id_especialidad WHERE t2.id_medico = %d" %int(id_medico)
+    Especialidad = TblEspecialidad.objects.raw(consulta)
+    return render_to_response("EspecialidadMedico.html",
+                              {"iTblEspecialidad":iTblEspecialidad,
+                               "iTblMedico":iTblMedico,
+                               "iTblEspecialidadxMedico":Especialidad},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EspecialidadxMedicoAgregar(request, id_especialidad, id_medico):
+    medico = TblMedico.objects.get(pk=id_medico)
+    especialidad = TblEspecialidad.objects.get(pk=id_especialidad)
+    try:
+        especialidadxmedico = TblEspecialidadXMedico.objects.get(id_medico=medico, id_especialidad=especialidad)
+        return HttpResponseRedirect("/Usuarios/Medico/Especialidad/Especialidades/%d" %int(id_medico))
+    except ObjectDoesNotExist, e:
+        especialidadxmedico = TblEspecialidadXMedico(id_especialidad=especialidad, id_medico=medico)
+        especialidadxmedico.save()
+        return HttpResponseRedirect("/Usuarios/Medico/Especialidad/Especialidades/%d" %int(id_medico))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EspecialidadxMedicoEliminar(requese, id_especialidad, id_medico):
+    especialidadxmedico = TblEspecialidadXMedico.objects.get(id_especialidad=int(id_especialidad), id_medico=int(id_medico))
+    especialidadxmedico.delete()
+    return HttpResponseRedirect("/Usuarios/Medico/Especialidad/Especialidades/%d" %int(id_medico))

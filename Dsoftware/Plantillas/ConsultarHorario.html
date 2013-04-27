@@ -1,0 +1,40 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<table class="table">
+				<thead>
+					<tr>
+						<th> Hora de Entrada </th>
+						<th> Hora de Salida </th>
+						<th> Mantenimiento </th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for i in iTblHorario%}
+						<tr>
+							<th>{{i.hora_entrada|date:"g:i a"}}</th>
+							<th>{{i.hora_salida|date:"g:i a"}}</th>
+							<th>
+								<a href="{% url Clinica.views.EditarHorario i.id_horario %}" class="btn">
+									Editar
+								</a>
+							</th>
+						</tr>
+					{%empty%}
+						<tr>
+							<th colspan="8"> No hay Especialidad Agregada </th>
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</section>
+	<aside>
+	</aside>
+
+{% endblock contenido %}

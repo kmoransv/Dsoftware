@@ -1,0 +1,45 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		<!--<div class="container">-->
+			<table class="table">
+				<thead>
+					<tr>
+						<th> Nombre </th>
+						<th> Apellido </th>
+						<th> Documento Unico de Identidad </th>
+						<th> Telefono </th>
+						<th> Direccion </th>
+						<th> Mantenimiento </th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for i in iTblMedico%}
+						<tr>
+							<th>{{i.nombre_medico}}</th>
+							<th>{{i.apellido_medico}}</th>
+							<th>{{i.dui_medico}}</th>
+							<th>{{i.telefono_medico}}</th>
+							<th>{{i.direccion_medico}}</th>
+							<th>
+								<a href="{% url Clinica.views.EliminarMedico i.id_medico %}" class="btn btn-danger">
+									Eliminar
+								</a>
+							</th>
+						</tr>
+					{%empty%}
+						<tr>
+							<th colspan="8"> No hay Medicos Agregados </th>
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+			<a href="{% url Clinica.views.AgregarMedico %}" class="btn btn-primary"> Agregar </a>
+		<!--</div>-->
+	</section>
+	<aside>
+	</aside>
+
+{% endblock contenido %}
