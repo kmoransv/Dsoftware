@@ -380,7 +380,7 @@ def AgregarEmpleado(request):
                               {"iFrmEmpleado":iFrmEmpleado},
                               context_instance=RequestContext(request))
     
-    @login_required(login_url='/Acceso/')
+@login_required(login_url='/Acceso/')
 def ConsultarCita(request):
     consulta = "SELECT t1.id_cita, t3.nombre_medico, t3.apellido_medico, t1.fecha_solicitada, t1.hora_solicitada FROM tbl_cita AS t1 INNER JOIN tbl_paciente AS t2 ON t1.id_paciente = t2.id_paciente INNER JOIN tbl_medico AS t3 ON t1.id_medico = t3.id_medico WHERE t2.dui_paciente = '%s' ORDER BY t1.fecha_solicitada;" %request.user.username
     iTblCita = TblCita.objects.raw(consulta)
