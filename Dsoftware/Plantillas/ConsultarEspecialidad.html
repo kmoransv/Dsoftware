@@ -1,0 +1,42 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<table class="table">
+				<thead>
+					<tr>
+						<th> Descripcion </th>
+						<th> Mantenimiento </th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for i in iTblEspecialidad%}
+						<tr>
+							<th>{{i.descripcion_especialidad}}</th>
+							<th>
+								<a href="{% url Clinica.views.EditarEspecialidad i.id_especialidad %}" class="btn">
+									Editar
+								</a>
+								<a href="{% url Clinica.views.EliminarEspecialidad i.id_especialidad %}" class="btn btn-danger">
+									Eliminar
+								</a>
+							</th>
+						</tr>
+					{%empty%}
+						<tr>
+							<th colspan="8"> No hay Especialidad Agregada </th>
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+			<a href="{% url Clinica.views.AgregarEspecialidad %}" class="btn btn-primary"> Agregar Especialidad </a>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</section>
+	<aside>
+	</aside>
+
+{% endblock contenido %}

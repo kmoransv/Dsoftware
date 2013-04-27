@@ -131,3 +131,77 @@ def EditarClinica(request, id_clinica):
                               {"iFrmClinica":iFrmClinica},
                               context_instance=RequestContext(request))
     
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def ConsultarEspecialidad(request):
+    iTblEspecialidad = TblEspecialidad.objects.all()
+    return render_to_response("ConsultarEspecialidad.html",
+                              {"iTblEspecialidad":iTblEspecialidad},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def AgregarEspecialidad(request):
+    if request.method == "POST":
+        iFrmEspecialidad = FrmEspecialidad(request.POST)
+        if iFrmEspecialidad.is_valid():
+            iFrmEspecialidad.save()
+            return HttpResponseRedirect("/Administracion/Consultar/Especialidad/")
+    else:
+        iFrmEspecialidad = FrmEspecialidad()
+
+    return render_to_response("AgregarEspecialidad.html",
+                              {"iFrmEspecialidad":iFrmEspecialidad},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EliminarEspecialidad(request, id_especialidad):
+    especialidad = TblEspecialidad.objects.get(pk=id_especialidad)
+    especialidad.delete()
+    return HttpResponseRedirect("/Administracion/Consultar/Especialidad/")
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EditarEspecialidad(request, id_especialidad):
+    especialidad = TblEspecialidad.objects.get(pk=id_especialidad)
+    if request.method == "POST":
+        iFrmEspecialidad = FrmEspecialidad(request.POST, instance=especialidad)
+        if iFrmEspecialidad.is_valid():
+            iFrmEspecialidad.save()
+            return HttpResponseRedirect("/Administracion/Consultar/Especialidad/")
+    else:
+        iFrmEspecialidad = FrmEspecialidad(instance=especialidad)
+    return render_to_response("EditarEspecialidad.html",
+                              {"iFrmEspecialidad":iFrmEspecialidad},
+                              context_instance=RequestContext(request))
+    
+    @permission_required('auth.Can add permission', login_url='/Acceso/')
+def ConsultarEstado(request):
+    iTblEstado = TblEstado.objects.all()
+    return render_to_response("ConsultarEstado.html",
+                              {"iTblEstado":iTblEstado},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def AgregarEstado(request):
+    if request.method == "POST":
+        iFrmEstado = FrmEstado(request.POST)
+        if iFrmEstado.is_valid():
+            iFrmEstado.save()
+            return HttpResponseRedirect("/Administracion/Consultar/Estado/")
+    else:
+        iFrmEstado = FrmEstado()
+    return render_to_response("AgregarEstado.html",
+                              {"iFrmEstado":iFrmEstado},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EditarEstado(request, id_estado):
+    estado = TblEstado.objects.get(pk=id_estado)
+    if request.method == "POST":
+        iFrmEstado = FrmEstado(request.POST, instance=estado)
+        if iFrmEstado.is_valid():
+            iFrmEstado.save()
+            return HttpResponseRedirect("/Administracion/Consultar/Estado/")
+    else:
+        iFrmEstado = FrmEstado(instance=estado)
+    return render_to_response("EditarEstado.html",
+                              {"iFrmEstado":iFrmEstado},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EliminarEstado(request, id_estado):
+    estado = TblEstado.objects.get(pk=id_estado)
+    estado.delete()
+    return HttpResponseRedirect("/Administracion/Consultar/Estado/")

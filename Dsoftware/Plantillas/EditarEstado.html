@@ -1,0 +1,23 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		Publicidad
+	</section>
+	<aside>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<form method="post"> {% csrf_token %}
+				<fieldset>
+					<legend> Información de Horarios </legend>
+					{{ iFrmEstado }}<br>
+					<button type="submit" class="btn btn-primary"> Guardar </button>
+					<a href="{% url Clinica.views.indexP %}" class="btn btn-danger"> Cancelar </a>
+				</fielset>
+			</form>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</aside>
+
+{% endblock contenido %}
