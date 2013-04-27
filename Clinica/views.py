@@ -229,9 +229,7 @@ def AgregarMedico(request):
                                          request.POST['Contrasena'])
             U.save()
             idU = User.objects.latest('id')
-            '''idG = Group.objects.get(pk=2)
-            idG.user_set.add(idU)'''
-
+            
             UStaff = User.objects.latest('id')
             UStaff.is_staff = 1
             UStaff.save()
@@ -357,9 +355,7 @@ def AgregarEmpleado(request):
                                          request.POST['Contrasena'])
             U.save()
             idU = User.objects.latest('id')
-            '''idG = Group.objects.get(pk=2)
-            idG.user_set.add(idU)'''
-
+            
             uEmpleado = User.objects.latest('id')
             permiso = Permission.objects.get(name='Can add tbl cita')
             uEmpleado.user_permissions.add(permiso)
