@@ -87,7 +87,7 @@ def ConsultarPaciente(request):
 @permission_required('auth.Can add permission', login_url='/Acceso/')
 def EliminarPaciente(request, id_paciente):
     paciente = TblPaciente.objects.get(pk=id_paciente)
-    usuario = User.objects.get(username = id.dui_paciente)
+    usuario = User.objects.get(username = paciente.dui_paciente)
     paciente.delete()
     usuario.delete()
     return HttpResponseRedirect("/Usuarios/Consultar/Pacientes/")
