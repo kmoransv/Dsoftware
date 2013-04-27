@@ -169,7 +169,7 @@ def EditarEspecialidad(request, id_especialidad):
                               {"iFrmEspecialidad":iFrmEspecialidad},
                               context_instance=RequestContext(request))
     
-    @permission_required('auth.Can add permission', login_url='/Acceso/')
+@permission_required('auth.Can add permission', login_url='/Acceso/')
 def ConsultarEstado(request):
     iTblEstado = TblEstado.objects.all()
     return render_to_response("ConsultarEstado.html",
