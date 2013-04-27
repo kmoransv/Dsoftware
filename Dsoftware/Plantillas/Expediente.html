@@ -1,0 +1,43 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		<table class="table">
+				<thead>
+					<tr>
+						<th> Fecha </th>
+						<th> Medico </th>
+						<th> Diagnostico </th>
+						<th> Tratamiento </th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for i in iTblExpediente%}
+						<tr>
+							<th>{{i.fecha}}</th>
+							<th>{{i.nombre_medico}} {{i.apellido_medico}}</th>
+							<th>{{i.diagnostico}}</th>
+						</tr>
+					{%empty%}
+						<tr>
+							<th colspan="8"> Expediente Vacio </th>
+						</tr>
+					{%endfor%}
+				</tbody>
+		</table>
+	</section>
+	<aside>
+		<!--<div class="container">-->
+			<form method="post"> {% csrf_token %}
+				<fieldset>
+					<legend> Expediente </legend>
+					{{ iFrmExpediente }}<br>
+					<button type="submit" class="btn"> Guardar </button>
+					<a href="{% url Clinica.views.AgregarPaciente %}" class="btn btn-link"> Cancelar </a>
+				</fielset>
+			</form>
+		<!--</div>-->
+	</aside>
+
+{% endblock contenido %}

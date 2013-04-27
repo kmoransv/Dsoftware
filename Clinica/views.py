@@ -115,7 +115,7 @@ def AgregarClinica(request):
 def EliminarClinica(request, id_clinica):
     clinica = TblClinica.objects.get(pk=id_clinica)
     clinica.delete()
-    return HttpResponseRedirect("/Administracion/Clinica/Consultar/")
+    return HttpResponseRedirect("/Administracion/Consultar/Clinica/")
 @permission_required('auth.Can add permission', login_url='/Acceso/')
 def EditarClinica(request, id_clinica):
     clinica = TblClinica.objects.get(pk=id_clinica)
@@ -123,7 +123,7 @@ def EditarClinica(request, id_clinica):
         iFrmClinica = FrmClinica(request.POST, instance=clinica)
         if iFrmClinica.is_valid():
             iFrmClinica.save()
-            return HttpResponseRedirect("/Administracion/Clinica/Consultar/")
+            return HttpResponseRedirect("/Administracion/Consultar/Clinica/")
     else:
         iFrmClinica = FrmClinica(instance=clinica)
 
@@ -434,5 +434,30 @@ def AgregarCita(request, id_paciente, id_especialidad):
     return render_to_response("AgregarCita.html",
                               {"iTblMedico":iTblMedico},
                               context_instance=RequestContext(request))
-    
-    
+
+@permission_required('Clinica.add_tblcatalogoexpediente', login_url='/Acceso/')
+def ExpedientePaciente(request):
+    if request.method == "POST":
+        iFrmExpedientePaciente = FrmExpedientePaciente(request.POST)
+        paciente = TblPaciente.objects.get(dui_paciente=request.POST['Documento_Paciente'])
+        return HttpResponseRedirect("/Usuarios/Medico/Expediente/Paciente/Cita/%d/" %(int(paciente.id_paciente)))
+    else:
+        iFrmExpedientePaciente = FrmExpedientePaciente()
+    return render_to_response("ExpedientePaciente.html",
+                              {"iFrmExpedientePaciente":iFrmExpedientePaciente},
+                              context_instance=RequestContext(request))
+    #return HttpResponse("Documento del Paciente")
+@permission_required('Clinica.add_tblcatalogoexpediente', login_url='/Acceso/')
+def ExpedienteCita(request, id_paciente):
+    medico = TblMedico.objects.get(dui_medico=request.user.username)
+    consulta = "SELECT t1.id_cita, t1.id_paciente, t2.nombre_paciente, t2.apellido_paciente, t1.fecha_solicitada, t1.hora_solicitada FROM tbl_cita AS t1 INNER JOIN tbl_paciente AS t2 ON t1.id_paciente = t2.id_paciente INNER JOIN tbl_medico AS t3 ON t1.id_medico = t3.id_medico WHERE t1.id_paciente = %d AND t1.id_medico = %d ORDER BY t1.fecha_solicitada;" %(int(id_paciente), int(medico.id_medico))
+    iTblCita = TblCita.objects.raw(consulta)
+    return render_to_response("ConsultarCitaExpediente.html",
+                              {"iTblCita":iTblCita},
+                              context_instance=RequestContext(request))
+    return HttpResponse("Cita del Paciente")
+@permission_required('Clinica.add_tblcatalogoexpediente', login_url='/Acceso/')
+def ExpedienteClinico(request, id_cita):
+     iFrmExpediente = FrmExpediente()
+     return render_to_response("Expediente.html",{"iFrmExpediente":iFrmExpediente},context_instance=RequestContext(request))
+    #return HttpResponse("Expediente Clinico")
