@@ -414,7 +414,7 @@ def CitaPaciente2(request):
                               {"iFrmCitaPaciente2":iFrmCitaPaciente2},
                               context_instance=RequestContext(request))
     
-    @login_required(login_url='/Acceso/')
+@login_required(login_url='/Acceso/')
 def AgregarCita(request, id_paciente, id_especialidad):
     iTblMedico = TblMedico.objects.raw("SELECT t1.id_medico, t1.nombre_medico, t1.apellido_medico FROM tbl_medico AS t1 INNER JOIN tbl_especialidad_x_medico AS t2 ON t1.id_medico = t2.id_medico WHERE id_especialidad = %d;" %int(id_especialidad))
     if request.method == "POST":
