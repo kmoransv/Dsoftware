@@ -1,0 +1,52 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<!--<section>-->
+		<div class="container">
+		<!--</div>-->
+			<table class="table">
+				<thead>
+					<tr>
+						<th> Nombre Empresa </th>
+						<th> Numero de Registro</th>
+						<th> Telefono </th>
+						<th> Fax </th>
+						<th> Direccion </th>
+						<th> Correo Electronico </th>
+						<th> Pagina Web </th>
+						<th> Mantenimiento </th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for i in iTblClinica%}
+						<tr>
+							<th>{{i.nombre_clinica}}</th>
+							<th>{{i.num_registro}}</th>
+							<th>{{i.telefono_clinica}}</th>
+							<th>{{i.fax_clinica}}</th>
+							<th>{{i.direccion_clinica}}</th>
+							<th>{{i.correo_clinica}}</th>
+							<th>{{i.web_clinica}}</th>
+							<th>
+								<a href="{% url Clinica.views.EditarClinica i.id_clinica %}" class="btn">
+									Editar
+								</a>
+								<a href="{% url Clinica.views.EliminarClinica i.id_clinica %}" class="btn btn-danger">
+									Eliminar
+								</a>
+							</th>
+						</tr>
+					{%empty%}
+						<tr>
+							<th colspan="8"> No hay Clinica Agregada </th>
+						</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+			<a href="{% url Clinica.views.AgregarClinica %}" class="btn btn-primary"> Agregar Clinica </a>
+		<!--<div class="container">-->
+		</div>
+	<!--</section>-->
+
+{% endblock contenido %}

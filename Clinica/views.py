@@ -91,3 +91,43 @@ def EliminarPaciente(request, id_paciente):
     paciente.delete()
     usuario.delete()
     return HttpResponseRedirect("/Usuarios/Consultar/Pacientes/")
+
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def ConsultarClinica(request):
+    iTblClinica = TblClinica.objects.all()
+    return render_to_response("ConsultarClinica.html",
+                              {"iTblClinica":iTblClinica},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def AgregarClinica(request):
+    if request.method == "POST":
+        iFrmClinica = FrmClinica(request.POST)
+        if iFrmClinica.is_valid():
+            iFrmClinica.save()
+            return HttpResponseRedirect("/Administracion/Consultar/Clinica/")
+    else:
+        iFrmClinica = FrmClinica()
+
+    return render_to_response("AgregarClinica.html",
+                              {"iFrmClinica":iFrmClinica},
+                              context_instance=RequestContext(request))
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EliminarClinica(request, id_clinica):
+    clinica = TblClinica.objects.get(pk=id_clinica)
+    clinica.delete()
+    return HttpResponseRedirect("/Administracion/Clinica/Consultar/")
+@permission_required('auth.Can add permission', login_url='/Acceso/')
+def EditarClinica(request, id_clinica):
+    clinica = TblClinica.objects.get(pk=id_clinica)
+    if request.method == "POST":
+        iFrmClinica = FrmClinica(request.POST, instance=clinica)
+        if iFrmClinica.is_valid():
+            iFrmClinica.save()
+            return HttpResponseRedirect("/Administracion/Clinica/Consultar/")
+    else:
+        iFrmClinica = FrmClinica(instance=clinica)
+
+    return render_to_response("EditarClinica.html",
+                              {"iFrmClinica":iFrmClinica},
+                              context_instance=RequestContext(request))
+    

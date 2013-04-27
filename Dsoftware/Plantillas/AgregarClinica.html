@@ -1,0 +1,23 @@
+{% extends "BaseWeb.html" %}
+
+{% block contenido %}
+
+	<section>
+		Aun nada
+	</section>
+	<aside>
+		<!--<div class="container">-->
+		<!--</div>-->
+			<form method="post"> {% csrf_token %}
+				<fieldset>
+					<legend> Información de Clinica </legend>
+					{{ iFrmClinica }}<br>
+					<button type="submit" class="btn btn-primary"> Guardar </button>
+					<a href="#" class="btn btn-danger"> Cancelar </a>
+				</fielset>
+			</form>
+		<!--<div class="container">-->
+		<!--</div>-->
+	</aside>
+
+{% endblock contenido %}
